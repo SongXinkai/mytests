@@ -1,0 +1,8 @@
+local_repository(
+  # the name will be used in BUILD file of this repository(deps = ["@example0//some_module:some_lib_name"]);
+  name="repo0", 
+  # absolute path of the directory containing the target repository's WORKSPACE file
+  #path="/root/mytests/bazel/repo0" 
+  # relative path to the main repository's WORKSPACE file(this file)
+  path="../repo0" 
+)
