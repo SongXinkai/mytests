@@ -7,9 +7,6 @@ using namespace std;
 
 int main(){
   time_t a = 0, b;
-  if (a == 0){
-    cout << "xx" << endl;
-  }
   time(&a); // time.h
   sleep(2); // unistd.h
   time(&b);

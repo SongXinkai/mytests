@@ -51,14 +51,20 @@ vector<string> string_split(const string &s, const string &seperator){
 }
 
 int main(){
-  int i1 = 199, i21, i22;
-  string s1, s2="288_377", s3 = "finish";
-  i2s(i1, s1);
-  vector<string> vec_s = string_split(s2, "_");
-  s2i(vec_s[0], i21);
-  s2i(vec_s[1], i22);
-  cout << ("finish" == s3) << ", " << ("288" == s3) << endl;
-  cout << i1 << ", " << s1 << endl;
-  cout << s2 << ", " << i21 << " _ " << i22 << endl;
+  //int i1 = 199, i21, i22;
+  //string s1, s2="288_377", s3 = "finish";
+  //i2s(i1, s1);
+  //vector<string> vec_s = string_split(s2, "_");
+  //s2i(vec_s[0], i21);
+  //s2i(vec_s[1], i22);
+  //cout << ("finish" == s3) << ", " << ("288" == s3) << endl;
+  //cout << i1 << ", " << s1 << endl;
+  //cout << s2 << ", " << i21 << " _ " << i22 << endl;
+
+  vector<string> vec_s_0 = string_split("model-10000.uff", "model-");
+  vector<string> vec_s_1 = string_split(vec_s_0[0], ".uff");
+  int i;
+  s2i(vec_s_1[0], i);
+  cout << i << endl;
   return 0;
 }
