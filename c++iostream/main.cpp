@@ -4,10 +4,12 @@
 */
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
 int main (){
+  cout << ceil(3 / 2.0) << endl;
   cout << 12 << '\r';
   cout << 2 << '\r';
   cout << 3 << '\r' << endl;
@@ -29,5 +31,7 @@ int main (){
   cout << resetiosflags(ios::scientific);
   cout << "pi = " << setprecision(2) << pi << endl; // set precision
   cout << "pi = " << setiosflags(ios::fixed) << setprecision(4) << pi << endl; // set precision behind point
+
+  cout << setfill(' ') << setw(5) << a << endl;
   return 0;
 }
