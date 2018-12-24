@@ -1,3 +1,4 @@
+// g++ random.cpp  -std=c++11
 #include <random>
 #include <iostream>
 

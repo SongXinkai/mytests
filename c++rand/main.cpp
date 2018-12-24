@@ -11,5 +11,6 @@ int main()
         j=1+(int)(10.0 * rand()/(RAND_MAX+1.0));
         printf("%d ",j);
     }
-        printf("\n");
+    printf("\n");
+    return 0;
 }
