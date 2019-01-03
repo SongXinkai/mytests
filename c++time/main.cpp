@@ -16,12 +16,12 @@ int main(){
   clock_t clc_a = 0, clc_b = 0;
   vector<double> v;
   clc_a=clock(); // time.h
-  for (int i = 0; i < 100000000; ++i){
+  for (int i = 0; i < 10000000; ++i){
     v.push_back(double(i)*i);
   }
   clc_b=clock();
   cout << clc_a << ", " << clc_b <<", CLOCKS_PER_SEC: " << CLOCKS_PER_SEC<< endl;
-  cout << (clc_b - clc_a) / CLOCKS_PER_SEC << endl;
+  cout << float(clc_b - clc_a) / CLOCKS_PER_SEC << endl;
 
   clc_a=clock(); // time.h
   sleep(2); // NO CPU clock during sleep

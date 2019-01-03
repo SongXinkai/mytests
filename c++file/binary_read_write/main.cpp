@@ -64,7 +64,7 @@ void write(const string file){
 }
 
 int main (){
-  write("test.bin");
+  //write("test.bin");
   vector<vector<float> > feas;
   vector<vector<float> > pis;
   vector<float> vs;

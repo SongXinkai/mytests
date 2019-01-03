@@ -24,4 +24,3 @@ int main(){
   cout << at_a.load() << endl;
   return 0;
 }
-
