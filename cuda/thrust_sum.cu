@@ -1,10 +1,10 @@
 #include <cuda_runtime.h>
-#include <thrust/sort.h>
+#include <thrust/reduce.h>
 #include <thrust/device_ptr.h>
 #include <iostream>
 #include <algorithm>
 
-using thrust::sort;
+//using thrust::sort;
 using thrust::device_ptr;
 using std::cout;
 using std::endl;

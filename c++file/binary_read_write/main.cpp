@@ -3,6 +3,11 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream>
+
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -42,47 +47,66 @@ void read(const string file, vector<vector<float> >& feas,
 void write(const string file){
   int steps_out = 400;
   float winner_out = 1.0;
-  unsigned char feas_out[1000 * 17*19*19];
-  float pis_out[1000 * 362]; 
+  unsigned char feas_out[400 * 17*19*19] = {0};
+  float pis_out[400 * 362] = {0.0}; 
+  srand((int)time(0));
   for (int i = 0; i < steps_out; ++i){
-    for (int j = 0; j < 19*19; ++j){
-      for (int c = 0; c < 17; ++c){
-        feas_out[i*17*19*19+j*17+c] = (c == i%17 && j <= i%361) ? (unsigned char)1 : (unsigned char)0;
-      }
+    int position_0 = int(361.0 * rand()/(RAND_MAX+1.0));
+    int position_1 = int(361.0 * rand()/(RAND_MAX+1.0));
+    while(position_1 == position_0){
+      position_1 = int(361.0 * rand()/(RAND_MAX+1.0));
     }
-    for (int j = 0; j < 362; ++j){
-      pis_out[i * 362 + j] = float(i + j * 0.001);
+    for (int c = 0; c < 16; ++c){
+      feas_out[i*17*19*19+position_0*17+c] = (unsigned char)1;
+    }
+    for (int c = 0; c < 2; ++c){
+      feas_out[i*17*19*19+position_1*17+c] = (unsigned char)1;
+    }
+    pis_out[i * 362 + position_0] = 0.9;
+    pis_out[i * 362 + position_1] = 0.1;
+
+    for (int j = 0; j < 19*19; ++j){
+      feas_out[i*17*19*19+j*17+16] = (i%2==0) ? (unsigned char)1 : (unsigned char)0;
     }
   }
   std::ofstream output(file, ios::out | ios::binary );
   output.write((char*)&steps_out, sizeof(int));
-  // CHECK_LE(steps_out, 1000);
   output.write((char*)&winner_out, sizeof(float));
   output.write((char*)feas_out, sizeof(char) * 19*19*17*steps_out);
   output.write((char*)pis_out, sizeof(float) * (19*19+1) * steps_out);
   output.close();
+  std::ofstream finish_out(file+".finish", ios::out | ios::binary );
+  finish_out.close();
 }
 
 int main (){
-  //write("test.bin");
-  vector<vector<float> > feas;
-  vector<vector<float> > pis;
-  vector<float> vs;
-  read("test.bin", feas, pis, vs);
-
-  cout << feas.size() << ", " << pis.size() << ", " << vs.size() << ", " << endl;
-  for (int i = 0; i < feas.size(); ++i){
-    cout << "========" << i << "======" << endl;
-    for (int j = 0; j < 19*19; ++j){
-      for (int c = 0; c < 17; ++c){
-        cout << feas[i][j*17+c] << ", ";
-      }
-      cout << endl;
-    }
-    for (int j = 0; j < pis[i].size(); ++j){
-      cout << pis[i][j] << ", ";
-    }
-    cout << endl << vs[i] << endl;
+  stringstream ss;
+  for (int i = 0; i < 1000; ++i){
+    ss.str("");
+    ss << "go/" << i << ".bin";
+    write(ss.str());
+    // vector<vector<float> > feas;
+    // vector<vector<float> > pis;
+    // vector<float> vs;
+    // read(ss.str(), feas, pis, vs);
+    // cout << feas.size() << ", " << pis.size() << ", " << vs.size() << ", " << endl;
+    // for (int i = 0; i < feas.size(); ++i){
+    //   cout << "========" << i << "======" << endl;
+    //   for (int j = 0; j < 19*19; ++j){
+    //     cout << j << ": ";
+    //     for (int c = 0; c < 17; ++c){
+    //       cout << feas[i][j*17+c] << ", ";
+    //     }
+    //     cout << endl;
+    //   }
+    //   for (int j = 0; j < pis[i].size(); ++j){
+    //     if (pis[i][j] != 0){
+    //       cout << "(" << j << "-" << pis[i][j] << "), ";
+    //     }
+    //   }
+    //   cout << endl << vs[i] << endl;
+    // }
   }
+
   return 0;
 }
