@@ -46,7 +46,7 @@ void read(const string file, vector<vector<float> >& feas,
 
 void write(const string file){
   int steps_out = 400;
-  float winner_out = 1.0;
+  int winner_out = 1; // 1: black win, 0: white win
   unsigned char feas_out[400 * 17*19*19] = {0};
   float pis_out[400 * 362] = {0.0}; 
   srand((int)time(0));
@@ -71,7 +71,7 @@ void write(const string file){
   }
   std::ofstream output(file, ios::out | ios::binary );
   output.write((char*)&steps_out, sizeof(int));
-  output.write((char*)&winner_out, sizeof(float));
+  output.write((char*)&winner_out, sizeof(int));
   output.write((char*)feas_out, sizeof(char) * 19*19*17*steps_out);
   output.write((char*)pis_out, sizeof(float) * (19*19+1) * steps_out);
   output.close();
