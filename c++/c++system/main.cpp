@@ -8,8 +8,10 @@ using namespace std;
 int main(){
   stringstream ss;
   string s = "c.";
-  system(("touch " + s + "out").c_str());
-  ss << "mv " << "c.out " << "b.out";
-  system(ss.str().c_str());
+  int a = system(("touch " + s + "out").c_str());
+  cout << a << endl;
+  ss << "mv " << "d.out " << "b.out";
+  a = system(ss.str().c_str());
+  cout << a << endl;
   return 0;
 }

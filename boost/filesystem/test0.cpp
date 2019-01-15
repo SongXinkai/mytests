@@ -33,8 +33,7 @@ int main (){
   return 0;
 }
 
-int get_filenames(const std::string& dir, std::vector<std::string>& filenames)
-{
+int get_filenames(const std::string& dir, std::vector<std::string>& filenames, bool recursive){
     fs::path path(dir);
     if (!fs::exists(path)){
         return -1;
@@ -44,9 +43,8 @@ int get_filenames(const std::string& dir, std::vector<std::string>& filenames)
         if (fs::is_regular_file(iter->status())){
             filenames.push_back(iter->path().string());
         }
- 
-        if (fs::is_directory(iter->status())){
-            get_filenames(iter->path().string(), filenames);
+        if (recursive && fs::is_directory(iter->status())){
+            get_filenames(iter->path().string(), filenames, recursive);
         }
     }
     return filenames.size();
