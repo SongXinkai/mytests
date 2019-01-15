@@ -47,8 +47,8 @@ void read(const string file, vector<vector<float> >& feas,
 void write(const string file){
   int steps_out = 400;
   int winner_out = 1; // 1: black win, 0: white win
-  unsigned char feas_out[400 * 17*19*19] = {0};
-  float pis_out[400 * 362] = {0.0}; 
+  unsigned char* feas_out = new unsigned char[steps_out * 17*19*19];
+  float* pis_out = new float[steps_out * 362];
   srand((int)time(0));
   for (int i = 0; i < steps_out; ++i){
     int position_0 = int(361.0 * rand()/(RAND_MAX+1.0));
@@ -81,31 +81,31 @@ void write(const string file){
 
 int main (){
   stringstream ss;
-  for (int i = 0; i < 1000; ++i){
-    ss.str("");
-    ss << "go/" << i << ".bin";
-    // write(ss.str());
-    vector<vector<float> > feas;
-    vector<vector<float> > pis;
-    vector<float> vs;
-    read(ss.str(), feas, pis, vs);
-    cout << feas.size() << ", " << pis.size() << ", " << vs.size() << ", " << endl;
-    for (int i = 0; i < feas.size(); ++i){
-      cout << "========" << i << "======" << endl;
-      for (int j = 0; j < 19*19; ++j){
-        cout << j << ": ";
-        for (int c = 0; c < 17; ++c){
-          cout << feas[i][j*17+c] << ", ";
-        }
-        cout << endl;
+  // for (int i = 0; i < 1000; ++i){
+  //   ss.str("");
+  //   ss << "go/" << i << ".bin";
+  //   write(ss.str());
+  // }
+  vector<vector<float> > feas;
+  vector<vector<float> > pis;
+  vector<float> vs;
+  read("0.bin", feas, pis, vs);
+  cout << feas.size() << ", " << pis.size() << ", " << vs.size() << ", " << endl;
+  for (int i = 0; i < feas.size(); ++i){
+    cout << "========" << i << "======" << endl;
+    for (int j = 0; j < 19*19; ++j){
+      cout << j << ": ";
+      for (int c = 0; c < 17; ++c){
+        cout << feas[i][j*17+c] << ", ";
       }
-      for (int j = 0; j < pis[i].size(); ++j){
-        if (pis[i][j] != 0){
-          cout << "(" << j << "-" << pis[i][j] << "), ";
-        }
-      }
-      cout << endl << vs[i] << endl;
+      cout << endl;
     }
+    for (int j = 0; j < pis[i].size(); ++j){
+      if (pis[i][j] != 0){
+        cout << "(" << j << "-" << pis[i][j] << "), ";
+      }
+    }
+    cout << endl << vs[i] << endl;
   }
 
   return 0;

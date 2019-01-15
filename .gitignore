@@ -1,3 +1,5 @@
 *core
 *a.out
 .*.swp
+*bin
+*bin.finish
