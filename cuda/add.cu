@@ -18,7 +18,7 @@ using std::endl;
     } \
     cout << vec[len - 1] << "}" << endl;
 
-#define LEN 34
+#define LEN 512
 
 // kernel functions
 template<typename Dtype>
@@ -33,9 +33,9 @@ __global__ void add_kernel(const int N, const Dtype* a, const Dtype* b, Dtype* c
 
 int main(){
     // host memory malloc & initial
-    int* host_a = new int[LEN];
-    int* host_b = new int[LEN];
-    int* host_c = new int[LEN];
+    float* host_a = new float[LEN];
+    float* host_b = new float[LEN];
+    float* host_c = new float[LEN];
     for (int i = 0; i < LEN; ++i){
         host_a[i] = i;
         host_b[i] = i * 100;
@@ -48,23 +48,23 @@ int main(){
     cout << "Using GPU " << device_id << "." << endl;
     
     // cudaMalloc & cudaMemcpy & cudaMemset
-    int* dev_a;
-    int* dev_b;
-    int* dev_c;
-    CUDA_CHECK(cudaMalloc((void**)&dev_a, LEN * sizeof(int)));
-    CUDA_CHECK(cudaMalloc((void**)&dev_b, LEN * sizeof(int)));
-    CUDA_CHECK(cudaMalloc((void**)&dev_c, LEN * sizeof(int)));
-    CUDA_CHECK(cudaMemcpy(dev_a, host_a, LEN * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(dev_b, host_b, LEN * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemset(dev_c, 0, LEN * sizeof(int))); // Set value by byte
+    float* dev_a;
+    float* dev_b;
+    float* dev_c;
+    CUDA_CHECK(cudaMalloc((void**)&dev_a, LEN * sizeof(float)));
+    CUDA_CHECK(cudaMalloc((void**)&dev_b, LEN * sizeof(float)));
+    CUDA_CHECK(cudaMalloc((void**)&dev_c, LEN * sizeof(float)));
+    CUDA_CHECK(cudaMemcpy(dev_a, host_a, LEN * sizeof(float), cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(dev_b, host_b, LEN * sizeof(float), cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemset(dev_c, 0, LEN * sizeof(float))); // Set value by byte
 
     // add_kernel & result copy & print
     dim3 grid_dim(1, 1, 1);   // gridDim.x,  gridDim.y,  gridDim.z (always 1)
-    dim3 block_dim(16, 1, 1); // blockDim.x, blockDim.y, blockDim.z
-    add_kernel<int><<<grid_dim, block_dim>>>(LEN, dev_a, dev_b, dev_c);
+    dim3 block_dim(512, 1, 1); // blockDim.x, blockDim.y, blockDim.z
+    add_kernel<float><<<grid_dim, block_dim>>>(LEN, dev_a, dev_b, dev_c);
     //add_kernel<<<1, 16>>>(LEN, dev_a, dev_b, dev_c); // Set gridDim.x & blockDim.x
-    CUDA_CHECK(cudaMemcpy(host_c, dev_c, LEN * sizeof(int), cudaMemcpyDeviceToHost));
-    VECTOR_PRINT("add_kernel results", host_c, LEN);
+    CUDA_CHECK(cudaMemcpy(host_c, dev_c, LEN * sizeof(float), cudaMemcpyDeviceToHost));
+    //VECTOR_PRINT("add_kernel results", host_c, LEN);
 
     // Free gpu memory & free cpu memory
     CUDA_CHECK(cudaFree(dev_a));
